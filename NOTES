@@ -22,21 +22,41 @@ clean:
 * I don't like that it knows how to build .o files without being told
     * do I care about the env vars? Unix way and whatnot?
 * I love the simplicity of "<cmd> <args>" with no interference
-* TODO: translate to a hypothetical python lib
 
 ---------------------------------------------------------------------------------
 from pub import task
-from pub.shortcuts import install, rm
+from pub.shortcuts import rm, gcc
+from pub.shortcuts import install as install_
 
-#TODO: automatically translate these to env vars?
 PREFIX += "/usr/local"
 CFLAGS = "-g -Wall -I${PREFIX}/apr/include/apr-1  -I${PREFIX}/apr/include/apr-util-1"
 LDFLAGS = "-lapr-1 -pthread -laprutil-1"
 
-@task("bstrlib.c", "db.c", "shell.c", "commands.c")
-def devpkg:
-    
+def compile(files):
+    for file in files:
+        gcc(file, CFLAGS) #XXX: reasonable?
+
+@task("bstrlib.c", "db.c", "shell.c", "commands.c", default=True)
+def devpkg(changed_files):
+    compile(changed_files))
+
+@task(devpkg)
+def install():
+    install_("-d", DESTDIR/PREFIX/bin)
+    install_("devpkg", DESTDIR/PREFIX/bin)
+
+@task
+def clean():
+    rm("-f", "*.o")
+    rm("-f", "devpkg")
+    rm("-rf", "*.dSYM")
 ---------------------------------------------------------------------------------
+
+* automatically translate these to env vars? How should those work?
+* NOTE: default=True means that "pub" with no arguments runs this command
+* is changed_files good? That is, if "shell.c" has been updated, and no other file
+  in the dependency list, the function takes a list of the updated files.
+  Should it be ["db.c", ...] or [filehandle<db.c>, ...]?
 
 
 https://github.com/mojombo/jekyll/blob/master/Rakefile
@@ -84,5 +104,3 @@ def coverage():
 ---------------------------------------------------------------------------------
 
 * sh should just be envoy.run: https://github.com/kennethreitz/envoy
-
-* 
