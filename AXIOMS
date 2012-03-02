@@ -9,11 +9,11 @@
     * or copy a directory
     * or checkout something from git, svn, etc
     * or move a file
-* Have is a utility belt; it should be *useful* over *pretty*
+* pub is a utility belt; it should be *useful* over *pretty*
     * Messy solutions should work; pretty solutions easy to find
-* Have will have beautiful documentation of *all* features
-    * Have will innovate documentation
-* Have should be pythonic
+* pub will have beautiful documentation of *all* features
+    * pub will innovate documentation
+* pub should be pythonic
     * I don't believe there's a need to learn a new language just to write makefiles
     * No magic; import things just like a regular python program
 * Should wrap the best available libraries
