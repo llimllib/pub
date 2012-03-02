@@ -52,7 +52,7 @@ def clean():
     rm("-rf", "*.dSYM")
 ---------------------------------------------------------------------------------
 
-* automatically translate these to env vars? How should those work?
+* automatically translate env vars? How should those work?
 * NOTE: default=True means that "pub" with no arguments runs this command
 * is changed_files good? That is, if "shell.c" has been updated, and no other file
   in the dependency list, the function takes a list of the updated files.
@@ -63,7 +63,7 @@ install -> devpkg -> /- bstrlib.c
                      |- shell.c
                      \- commands.c
 
-Should probably disallow dependency cycles.
+make sure we have a dependency tree, not a graph.
 
 
 https://github.com/mojombo/jekyll/blob/master/Rakefile

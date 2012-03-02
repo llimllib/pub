@@ -24,3 +24,7 @@
     * legit https://github.com/kennethreitz/legit
     * times https://github.com/nvie/times
     * use rsync for file copies!
+    * is there a good python graph lib?
+        * https://code.google.com/p/python-graph/
+        * networkx?
+        * igraph?
