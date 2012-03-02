@@ -58,6 +58,13 @@ def clean():
   in the dependency list, the function takes a list of the updated files.
   Should it be ["db.c", ...] or [filehandle<db.c>, ...]?
 
+install -> devpkg -> /- bstrlib.c
+                     |- db.c
+                     |- shell.c
+                     \- commands.c
+
+Should probably disallow dependency cycles.
+
 
 https://github.com/mojombo/jekyll/blob/master/Rakefile
 
