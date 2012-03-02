@@ -1,0 +1,88 @@
+http://c.learncodethehardway.org/book/learn-c-the-hard-waych27.html#x32-15500027.3:
+
+---------------------------------------------------------------------------------
+PREFIX?=/usr/local 
+CFLAGS=-g -Wall -I${PREFIX}/apr/include/apr-1  -I${PREFIX}/apr/include/apr-util-1 
+LDFLAGS=-lapr-1 -pthread -laprutil-1 
+ 
+all: devpkg 
+ 
+devpkg: bstrlib.o db.o shell.o commands.o 
+ 
+install: all 
+        install -d $(DESTDIR)/$(PREFIX)/bin/ 
+        install devpkg $(DESTDIR)/$(PREFIX)/bin/ 
+ 
+clean: 
+        rm -f *.o 
+        rm -f devpkg 
+        rm -rf *.dSYM
+---------------------------------------------------------------------------------
+
+* I don't like that it knows how to build .o files without being told
+    * do I care about the env vars? Unix way and whatnot?
+* I love the simplicity of "<cmd> <args>" with no interference
+* TODO: translate to a hypothetical python lib
+
+---------------------------------------------------------------------------------
+from pub import task
+from pub.shortcuts import install, rm
+
+#TODO: automatically translate these to env vars?
+PREFIX += "/usr/local"
+CFLAGS = "-g -Wall -I${PREFIX}/apr/include/apr-1  -I${PREFIX}/apr/include/apr-util-1"
+LDFLAGS = "-lapr-1 -pthread -laprutil-1"
+
+@task("bstrlib.c", "db.c", "shell.c", "commands.c")
+def devpkg:
+    
+---------------------------------------------------------------------------------
+
+
+https://github.com/mojombo/jekyll/blob/master/Rakefile
+
+* I like that it's just ruby, so helpers like:
+
+def gem_file
+  "#{name}-#{version}.gem"
+end
+
+are super simple
+
+* How would I translate this:
+
+---------------------------------------------------------------------------------
+desc "Generate RCov test coverage and open in your browser"
+task :coverage do
+  require 'rcov'
+  sh "rm -fr coverage"
+  sh "rcov test/test_*.rb"
+  sh "open coverage/index.html"
+end
+---------------------------------------------------------------------------------
+
+into python?
+
+---------------------------------------------------------------------------------
+@pub.task
+def coverage():
+    import rcov
+
+    pub.sh("rm -rf coverage")
+    pub.sh("rcov test/test_*.rb")
+    pub.sh("open coverage/index.html")
+---------------------------------------------------------------------------------
+from pub import task, sh
+
+@task
+def coverage():
+    import rcov
+
+    sh("rm -rf coverage")
+    sh("rcov test/test_*.rb")
+    sh("open coverage/index.html")
+---------------------------------------------------------------------------------
+
+* sh should just be envoy.run: https://github.com/kennethreitz/envoy
+
+* 
