@@ -4,6 +4,7 @@
 import argparse
 from os import getcwdu
 from imp import load_source
+from sys import exit
 from os.path import abspath, join
 
 from path import path
@@ -24,13 +25,22 @@ def main(options):
         print "Error in pubfile."
         raise
 
-    tasks = [getattr(pf, d) for d in dir(pf) if getattr(getattr(pf, d), "__pub_task__", False)]
+    tasks = dict((d, getattr(pf, d)) for d in dir(pf) if getattr(getattr(pf, d), "__pub_task__", False))
+
+    unknown_tasks = [t for t in options.tasks if t not in tasks.keys()]
+    if any(unknown_tasks):
+        print "sorry, don't know how to perform tasks %s" % unknown_tasks
+        exit()
+
     print tasks
+    print options.tasks
 
 if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description='Python Utility Belt v0.1')
+    parser.add_argument('tasks', metavar='task', type=str, nargs='+',
+                        help='the tasks to run')
 
     args = parser.parse_args()
 
