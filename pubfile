@@ -1,4 +1,4 @@
-from pub import task, run
+from pub import task
 from pub.shortcuts import python, rm
 
 @task
