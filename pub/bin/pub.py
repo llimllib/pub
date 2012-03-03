@@ -3,7 +3,9 @@
 
 import argparse
 from os import getcwdu
+from imp import load_source
 from os.path import abspath, join
+
 from path import path
 
 def main(options):
@@ -15,15 +17,12 @@ def main(options):
 
     tasks = []
 
-    def task(f):
-        tasks.append(f)
-
     try:
-        eval(pubfile)
+        pf = load_source("pubfile", "pubfile")
     except:
         print "Error in pubfile. TODO: print sys_exc or whatevers"
 
-    tasks[0]()
+    tasks = [getattr(pf, d) for d in dir(pf) if getattr(getattr(pf, d), "__pub_task__", False)]
 
 if __name__ == "__main__":
     import argparse

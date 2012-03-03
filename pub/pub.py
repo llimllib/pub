@@ -1,2 +1,3 @@
 def task(f):
-    tasks.append(f)
+    f.__pub_task__ = True
+    return f
