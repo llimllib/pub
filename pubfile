@@ -1,5 +1,5 @@
 from pub import task
-from pub.shortcuts import python, rm
+from pub.shortcuts import python, pip, rm
 
 @task
 def clean():
@@ -7,4 +7,5 @@ def clean():
 
 @task
 def build():
+    pip("uninstall pub")
     python("setup.py install")
