@@ -35,6 +35,8 @@ def main(options):
         print "sorry, don't know how to perform tasks %s" % unknown_tasks
         exit()
 
+    for task in options.tasks:
+        tasks[task]()
 
 if __name__ == "__main__":
     import argparse
