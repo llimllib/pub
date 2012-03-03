@@ -3,9 +3,13 @@ from pub.shortcuts import python, pip, rm
 
 @task
 def clean():
+    pip("uninstall pub")
     rm("-rf build dist pub.egg-info")
 
 @task
 def build():
-    pip("uninstall pub")
+    python("setup.py build")
+
+@task
+def install():
     python("setup.py install")
