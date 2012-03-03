@@ -3,8 +3,7 @@ from pub.shortcuts import python, pip, rm
 
 @task
 def clean():
-    pip("uninstall pub")
-    rm("-rf build dist pub.egg-info")
+    rm("-rf build dist pub.egg-info docs")
 
 @task
 def build():
