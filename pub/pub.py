@@ -5,7 +5,7 @@ def task(f):
     return f
 
 def run(cmd, *args, **kwargs):
-    out = run(cmd, *args, **kwargs)
+    out = envoy.run(cmd, *args, **kwargs)
     if out.status_code > 0:
         stdout.write("error running command: %s" % cmd)
         exit(out.status_code)
