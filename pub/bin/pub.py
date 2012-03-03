@@ -14,15 +14,18 @@ def main(options):
         pubfile = open(root / "pubfile")
     except IOError:
         print "unable to find pubfile"
+        raise
 
     tasks = []
 
     try:
         pf = load_source("pubfile", "pubfile")
     except:
-        print "Error in pubfile. TODO: print sys_exc or whatevers"
+        print "Error in pubfile."
+        raise
 
     tasks = [getattr(pf, d) for d in dir(pf) if getattr(getattr(pf, d), "__pub_task__", False)]
+    print tasks
 
 if __name__ == "__main__":
     import argparse
