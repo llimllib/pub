@@ -1,0 +1,10 @@
+from pub import task, run
+from pub.shortcuts import python, rm
+
+@task
+def clean():
+    rm("-rf build dist pub.egg-info")
+
+@task
+def build():
+    python("setup.py install")
