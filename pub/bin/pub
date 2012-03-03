@@ -2,12 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import argparse
-from os import getcwdu
-from imp import load_source
-from sys import exit
-from os.path import abspath, join
-
-from path import path
 
 from pub import main
 
