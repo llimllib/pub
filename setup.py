@@ -27,7 +27,7 @@ setup(
     author_email='bill.mill@gmail.com',
     url='https://github.com/llimllib/pub',
     packages=packages,
-    scripts = ['pub/bin/run_pub.py'],
+    scripts = ['pub/bin/pub'],
     package_data={'': ['LICENSE',]},
     include_package_data=True,
     install_requires=required,
