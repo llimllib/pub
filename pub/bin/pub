@@ -25,15 +25,16 @@ def main(options):
         print "Error in pubfile."
         raise
 
-    tasks = dict((d, getattr(pf, d)) for d in dir(pf) if getattr(getattr(pf, d), "__pub_task__", False))
+    #tasks are only those functions which have a __pub_task__ attribute
+    tasks = dict((d, getattr(pf, d))
+                 for d in dir(pf)
+                 if getattr(getattr(pf, d), "__pub_task__", False))
 
     unknown_tasks = [t for t in options.tasks if t not in tasks.keys()]
     if any(unknown_tasks):
         print "sorry, don't know how to perform tasks %s" % unknown_tasks
         exit()
 
-    print tasks
-    print options.tasks
 
 if __name__ == "__main__":
     import argparse
