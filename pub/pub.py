@@ -1,7 +1,7 @@
 from sys import exit, stdout
 from os import getcwdu
 from imp import load_source
-from os.path import abspath, join
+from os.path import abspath, join, isfile
 
 import envoy
 
@@ -28,6 +28,10 @@ def main(options):
         raise
 
     tasks = []
+
+    if not isfile(options.pubfile):
+        print "Unable to find pubfile %s" % abspath(options.pubfile)
+        exit(127)
 
     try:
         pf = load_source("pubfile", options.pubfile)

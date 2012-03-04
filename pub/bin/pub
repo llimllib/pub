@@ -13,8 +13,9 @@ if __name__ == "__main__":
                         help='list available tasks')
     parser.add_argument('tasks', metavar='task', type=str, nargs='*',
                         help='the tasks to run')
+    parser.add_argument('-f', '--pubfile', dest='pubfile', type=str, metavar='FILE',
+                        default='pubfile', help='The file to use as a pubfile')
 
     args = parser.parse_args()
-    args.pubfile = "pubfile" #TODO accept different filenames
 
     main(args)
