@@ -1,3 +1,5 @@
+import sys
+
 from sys import exit, stdout
 from os import getcwdu
 from imp import load_source
@@ -34,7 +36,10 @@ def main(options):
         exit(127)
 
     try:
+        #prevent python from writing pubfilec files.
+        sys.dont_write_bytecode = True
         pf = load_source("pubfile", options.pubfile)
+        sys.dont_write_bytecode = False
     except:
         print "Error in pubfile."
         raise
