@@ -15,3 +15,9 @@ def build():
 def install():
     """install pub"""
     python("setup.py install")
+
+@task
+def reinstall():
+    """uninstall and reinstall pub; probably only useful for developers"""
+    pip("uninstall -y pub")
+    install()
