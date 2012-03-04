@@ -16,7 +16,9 @@ def task(f):
 def run(cmd, *args, **kwargs):
     out = envoy.run(cmd, *args, **kwargs)
     if out.status_code > 0:
-        stdout.write("error running command: %s" % cmd)
+        stdout.write("error running command: %s\n" % cmd)
+        stdout.write(out.std_out)
+        stdout.write(out.std_err)
         exit(out.status_code)
 
     stdout.write(out.std_out)
