@@ -1,5 +1,5 @@
 from pub import task
-from pub.shortcuts import python, pip, rm
+from pub.shortcuts import python, pip, rm, nosetests
 
 @task
 def clean():
@@ -21,3 +21,7 @@ def reinstall():
     """uninstall and reinstall pub; probably only useful for developers"""
     pip("uninstall -y pub")
     install()
+
+@task
+def test():
+    nosetests("-s")
