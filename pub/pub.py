@@ -49,7 +49,7 @@ def main(options):
 
     if options.list_tasks:
         for name, task in tasks.iteritems():
-            print "%s: %s" % (name, task.__doc__)
+            print "%s: %s" % (name, task.__doc__ if task.__doc__ else "")
         exit()
 
     if not options.tasks:
