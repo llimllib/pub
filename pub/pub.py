@@ -26,11 +26,6 @@ def run(cmd, *args, **kwargs):
 
 def main(options):
     root = path(getcwdu())
-    try:
-        pubfile = open(root / "pubfile")
-    except IOError:
-        print "unable to find pubfile"
-        raise
 
     tasks = []
 
@@ -59,7 +54,7 @@ def main(options):
 
     if not options.tasks:
         print "no tasks specified. exiting"
-        exit()
+        exit(127)
 
     unknown_tasks = [t for t in options.tasks if t not in tasks.keys()]
     if any(unknown_tasks):
