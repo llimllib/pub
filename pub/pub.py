@@ -1,6 +1,6 @@
 import sys
 
-from sys import exit, stdout
+from sys import exit, stdout, stderr
 from os import getcwdu
 from imp import load_source
 from os.path import abspath, join, isfile
@@ -21,7 +21,8 @@ def run(cmd, *args, **kwargs):
         stdout.write(out.std_err)
         exit(out.status_code)
 
-    stdout.write(out.std_out)
+    stdout.write(out.std_out) if out.std_out else stderr.write(out.std_err)
+    return out
 
 def main(options):
     root = path(getcwdu())
