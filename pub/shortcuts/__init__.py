@@ -1,6 +1,4 @@
-from pub import run
+from shortcuts import make_shortcut
 
 for cmd in ["python", "pip", "ls", "rm", "nosetests"]:
-    exec """
-def %s(cmd, *args, **kwargs):
-    return run("%s %%s" %% cmd, *args, **kwargs)""" % (cmd, cmd)
+    globals()[cmd] = make_shortcut(cmd)

@@ -5,28 +5,11 @@ from os import getcwdu
 from imp import load_source
 from os.path import abspath, join, isfile
 
-import envoy
-
-from path import path
-
 def task(f):
     f.__pub_task__ = True
     return f
 
-def run(cmd, *args, **kwargs):
-    out = envoy.run(cmd, *args, **kwargs)
-    if out.status_code > 0:
-        stdout.write("error running command: %s\n" % cmd)
-        stdout.write(out.std_out)
-        stdout.write(out.std_err)
-        exit(out.status_code)
-
-    stdout.write(out.std_out) if out.std_out else stderr.write(out.std_err)
-    return out
-
 def main(options):
-    root = path(getcwdu())
-
     tasks = []
 
     if not isfile(options.pubfile):
