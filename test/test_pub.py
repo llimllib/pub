@@ -1,4 +1,5 @@
 import os
+import re
 import pub
 import tempfile
 from envoy import run
@@ -16,7 +17,7 @@ def make_pubfile(pubtext):
     return pubfile
 
 def expect(needle, haystack):
-    assert needle in haystack, "Couldn't find %s in %s" % (needle, haystack)
+    assert re.search(needle, haystack, re.S), "Couldn't find %s in %s" % (needle, haystack)
 
 def test_task():
     sentinel = 'bananas' * 4
