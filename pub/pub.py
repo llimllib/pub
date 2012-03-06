@@ -10,9 +10,11 @@ def task(*args, **kwargs):
         f.__pub_task__ = True
         f.__pub_dependencies__ = args
         return f
+
     #If @task is not followed by parens, the function will be the first argument
     if type(args[0]) == type(lambda: 1):
         return task_decorator(args[0])
+
     #otherwise, return the decorator function, which will be called with the decorated
     return task_decorator
 
