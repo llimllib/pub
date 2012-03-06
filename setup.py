@@ -15,7 +15,7 @@ if sys.argv[-1] == 'publish':
     os.system('python setup.py sdist upload')
     sys.exit()
 
-required = ['path.py>=2.2', 'envoy>=0.0.2', 'nose>=1.1']
+required = ['path.py>=2.2', 'envoy>=0.0.2']
 packages = ['pub', 'pub.shortcuts']
 
 setup(
