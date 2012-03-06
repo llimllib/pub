@@ -72,3 +72,20 @@ def test_pubfile_doesnt_exist():
     assert out.status_code == 127
     expect('Unable to find pubfile', out.std_out)
     expect('does_not_exist', out.std_out)
+
+def test_dependencies_simple():
+    pubtext = """import pub
+@pub.task
+def foo(): print 'first'
+
+@pub.task('foo')
+def bar(): print 'second'"""
+    
+    pf = make_pubfile(pubtext)
+    out = run("pub -f %s bar" % pf.name)
+
+    print out.std_out, out.std_err
+    assert out.status_code == 0, "got status code %s, stderr: %s" % (out.status_code, out.std_err)
+    expect('first.*second', out.std_out)
+
+if __name__=="__main__": test_dependencies_simple()
