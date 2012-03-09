@@ -111,3 +111,11 @@ def coverage():
 ---------------------------------------------------------------------------------
 
 * sh should just be envoy.run: https://github.com/kennethreitz/envoy
+
+* Is there any reason to differentiate between file tasks and regular tasks?
+    * If I don't, how will I determine if a dependency is a file or a task?
+        * i.e. @task("dep1", "dep2", "bstr.c")
+            * clearly bstr.c is a file (illegal python func name)
+            * but what about dep1 and dep2?
+                * assume they're tasks if there's no file extension?
+                    * require you to specify with file("dep1") if you want it to be a file?
