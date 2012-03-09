@@ -88,5 +88,3 @@ def bar(): print 'second'"""
     print out.std_out, out.std_err
     assert out.status_code == 0, "got status code %s, stderr: %s" % (out.status_code, out.std_err)
     expect('first.*second', out.std_out)
-
-if __name__=="__main__": test_dependencies_simple()
