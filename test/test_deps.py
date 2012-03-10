@@ -56,3 +56,43 @@ def test_dep_graph_cycle():
         assert 1/0, "Task cycle failed to generate exception"
     except pub.DependencyCycle, err:
         assert "Cycle" in err.message
+
+def test_get_tasks():
+    tasks = {
+        "foo": make_task(),
+        "bar": make_task("foo"),
+        "baz": make_task("bar", "foo"),
+    }
+
+    dep_graph = pub.make_dependency_graph(tasks)
+
+    tasklist = pub.get_tasks(tasks, dep_graph)
+
+    assert tasklist == ['foo', 'bar', 'baz'], "Expected [foo, bar, baz], got %s" % (tasklist)
+
+def test_get_tasks2():
+    tasks = {
+        "foo": make_task(),
+        "bar": make_task("foo"),
+        "baz": make_task("bar"),
+    }
+
+    dep_graph = pub.make_dependency_graph(tasks)
+
+    tasklist = pub.get_tasks(tasks, dep_graph)
+
+    assert tasklist == ['foo', 'bar', 'baz'], "Expected [foo, bar, baz], got %s" % (tasklist)
+
+def test_get_tasks3():
+    tasks = {
+        "foo": make_task(),
+        "bar": make_task("foo"),
+        "baz": make_task("foo"),
+    }
+
+    dep_graph = pub.make_dependency_graph(tasks)
+
+    tasklist = pub.get_tasks(tasks, dep_graph)
+
+    assert (tasklist.index("bar") > tasklist.index("foo") 
+       and tasklist.index("baz") > tasklist.index("foo"))
