@@ -7,6 +7,8 @@ from os.path import abspath, join, isfile
 
 from networkx import DiGraph, simple_cycles
 
+class DependencyCycle(Exception): pass
+
 def make_dependency_graph(tasks):
     dep_graph = DiGraph()
 
@@ -16,15 +18,16 @@ def make_dependency_graph(tasks):
         dep_graph.add_node(task)
 
     #then add the edges.
-    taskdeps = [(t, t.__pub_dependencies__) for t in tasks if hasattr(t, "__pub_dependencies__")]
+    taskdeps = [(name, task.__pub_dependencies__)
+                 for name, task in tasks.iteritems()
+                 if hasattr(task, "__pub_dependencies__")]
     for task, deps in taskdeps:
         for dep in deps:
             assert not dep_graph.has_edge(task, dep), "Cannot add duplicate edge: %s, %s" % (task, dep)
             dep_graph.add_edge(task, dep)
 
     if simple_cycles(dep_graph):
-        print "Cycle in the dependency graph: %s" % dep_graph
-        exit(127)
+        raise DependencyCycle("Cycle in the dependency graph: %s" % dep_graph)
 
     return dep_graph
 
