@@ -85,6 +85,20 @@ def bar(): print 'second'"""
     pf = make_pubfile(pubtext)
     out = run("pub -f %s bar" % pf.name)
 
-    print out.std_out, out.std_err
     assert out.status_code == 0, "got status code %s, stderr: %s" % (out.status_code, out.std_err)
     expect('first.*second', out.std_out)
+
+def test_dont_do_too_much():
+    pubtext = """import pub
+@pub.task
+def foo(): print 'first'
+
+@pub.task('foo')
+def bar(): print 'second'"""
+
+    pf = make_pubfile(pubtext)
+    out = run("pub -f %s foo" % pf.name)
+
+    assert out.status_code == 0, "got status code %s, stderr: %s" % (out.status_code, out.std_err)
+    expect('first', out.std_out)
+    assert 'second' not in out.std_out

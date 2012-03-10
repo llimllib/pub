@@ -109,7 +109,7 @@ def main(options):
 
     dep_graph = make_dependency_graph(tasks)
 
-    task_list = get_tasks(tasks, dep_graph)
+    task_list = get_tasks(options.tasks, dep_graph)
 
     for task in task_list:
         tasks[task]()
