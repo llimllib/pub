@@ -5,7 +5,7 @@ from os import getcwdu
 from imp import load_source
 from os.path import abspath, join, isfile
 
-from networkx import DiGraph, simple_cycles
+from networkx import DiGraph, simple_cycles, topological_sort
 
 class DependencyCycle(Exception): pass
 
@@ -34,22 +34,19 @@ def make_dependency_graph(tasks):
 def get_tasks(tasks, dep_graph):
     task_order = DiGraph()
 
-    for task in tasks:
-        if task_order.has_node(task): continue
-        task_order.add_node(task)
+    #copy dep_graph's nodes into task_order
+    task_order.add_nodes_from(dep_graph)
 
+    for task in tasks:
         def get_deps(task, graph):
             for t in graph.neighbors(task):
-                if task_order.has_node(t): continue
-
-                task_order.add_node(task)
                 task_order.add_edge(task, t)
 
                 get_deps(t, graph)
 
         get_deps(task, dep_graph)
 
-    return reversed(topological_sort(task_order))
+    return list(reversed(topological_sort(task_order)))
 
 def task(*args):
     #If we haven't been given any dependencies. Decorate and return.
