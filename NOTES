@@ -91,23 +91,14 @@ end
 into python?
 
 ---------------------------------------------------------------------------------
-@pub.task
-def coverage():
-    import rcov
-
-    pub.sh("rm -rf coverage")
-    pub.sh("rcov test/test_*.rb")
-    pub.sh("open coverage/index.html")
----------------------------------------------------------------------------------
-from pub import task, sh
+from pub import task
+from pub.shortcuts import rm, rcov, open
 
 @task
 def coverage():
-    import rcov
-
-    sh("rm -rf coverage")
-    sh("rcov test/test_*.rb")
-    sh("open coverage/index.html")
+    rm("-rf coverage")
+    rcov("test/test_*.rb")
+    open("coverage/index.html")
 ---------------------------------------------------------------------------------
 
 * sh should just be envoy.run: https://github.com/kennethreitz/envoy
@@ -119,3 +110,45 @@ def coverage():
             * but what about dep1 and dep2?
                 * assume they're tasks if there's no file extension?
                     * require you to specify with file("dep1") if you want it to be a file?
+
+* need to start writing docs. At least a README!
+
+* how would I use pub to build my website?
+
+---------------------------------------------------------------------------------
+from glob import glob
+
+from pub import task
+from pub.shortcuts import rm, mkdir, rsync, 
+
+@task
+def clean():
+    rm("-rf build")
+
+@task
+def blog_entries():
+    for file in glob(
+
+@task("blog_entries")
+def build():
+    t = partial(join, "template")
+    b = partial(join, "build")
+
+    mkdir('build')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
