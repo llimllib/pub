@@ -1,9 +1,9 @@
 import sys
 
 from sys import exit, stdout, stderr
-from os import getcwdu
+from os import getcwdu, chdir
 from imp import load_source
-from os.path import abspath, join, isfile
+from os.path import abspath, dirname, join, isfile
 
 from networkx import DiGraph, simple_cycles, topological_sort
 
@@ -76,6 +76,9 @@ def main(options):
     if not isfile(options.pubfile):
         print "Unable to find pubfile %s" % abspath(options.pubfile)
         exit(127)
+
+    #insert the pubfile's dir at the front of sys.path
+    sys.path.insert(0, dirname(abspath(options.pubfile)))
 
     try:
         #prevent python from writing pubfilec files.
