@@ -1,3 +1,4 @@
+from os import stat
 from sys import stdout, stderr
 import envoy
 
@@ -20,3 +21,6 @@ def make_shortcut(cmd):
     def _(cmd_arguments, *args, **kwargs):
         return run("%s %s" % (cmd, cmd_arguments), *args, **kwargs)
     return _
+
+def newer(f1, f2):
+    return stat(f1).st_mtime > stat(f2).st_mtime
