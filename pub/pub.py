@@ -31,20 +31,30 @@ def make_dependency_graph(tasks):
 
     return dep_graph
 
-def get_tasks(tasks, dep_graph):
+def _get_deps(task, task_graph, dep_graph):
+    for t in dep_graph.neighbors(task):
+        #if we already have node t in the task graph, we can just add an edge
+        #from the current node and move on to the next neighbor, as we must have
+        #the dependncy chain above t in the graph.
+        if task_graph.has_node(t):
+            task_graph.add_edge(task, t)
+            continue
+
+        #otherwise, add the node and recurse on it
+        else:
+            task_graph.add_node(t)
+            task_graph.add_edge(task, t)
+
+            _get_deps(t, task_graph, dep_graph)
+
+def get_tasks(do_tasks, dep_graph):
+    """Given a list of tasks to perform and a dependency graph, return the tasks
+    that must be performed, in the correct order"""
     task_order = DiGraph()
 
-    #copy dep_graph's nodes into task_order
-    task_order.add_nodes_from(dep_graph)
-
-    for task in tasks:
-        def get_deps(task, graph):
-            for t in graph.neighbors(task):
-                task_order.add_edge(task, t)
-
-                get_deps(t, graph)
-
-        get_deps(task, dep_graph)
+    for task in do_tasks:
+        task_order.add_node(task)
+        _get_deps(task, task_order, dep_graph)
 
     return list(reversed(topological_sort(task_order)))
 
@@ -99,7 +109,7 @@ def main(options):
 
     dep_graph = make_dependency_graph(tasks)
 
-    task_list = get_tasks(tasks)
+    task_list = get_tasks(tasks, dep_graph)
 
     for task in task_list:
-        task()
+        tasks[task]()
