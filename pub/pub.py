@@ -22,7 +22,6 @@ def make_dependency_graph(tasks):
             assert not dep_graph.has_edge(task, dep), "Cannot add duplicate edge: %s, %s" % (task, dep)
             dep_graph.add_edge(task, dep)
 
-    import pdb; pdb.set_trace()
     if simple_cycles(dep_graph):
         print "Cycle in the dependency graph: %s" % dep_graph
         exit(127)
@@ -49,20 +48,18 @@ def get_tasks(tasks, dep_graph):
 
     return reversed(topological_sort(task_order))
 
-def task(*args, **kwargs):
+def task(*args):
+    #If we haven't been given any dependencies. Decorate and return.
+    if type(args[0]) == type(task):
+        args[0].__pub_task__ = True
+        return args[0]
+
+    #otherwise, close over args as deps and return a decorator function
     def task_decorator(f):
         f.__pub_task__ = True
         f.__pub_dependencies__ = args
         return f
 
-    #If @task is not followed by parens, the function will be the first argument
-    if type(args[0]) == type(lambda: 1):
-        #There are no dependencies, so reset the args list
-        f = args[0]
-        args = tuple()
-        return task_decorator(f)
-
-    #otherwise, return the decorator function, which will be called with the decorated
     return task_decorator
 
 def main(options):
