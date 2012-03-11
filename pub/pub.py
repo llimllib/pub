@@ -76,16 +76,19 @@ def file_rule(filelist, name_func, *args, **kwargs):
     return _
 
 #XXX accept kwargs and add private kwarg
-def task(*args):
+def task(*args, **kwargs):
     #If we haven't been given any dependencies. Decorate and return.
-    if type(args[0]) == type(task):
-        args[0].__pub_task__ = True
-        return args[0]
+    if args and type(args[0]) == type(task):
+        f = args[0]
+        f.__pub_task__ = True
+        f.__pub_options__ = kwargs
+        return f
 
     #otherwise, close over args as deps and return a decorator function
     def task_decorator(f):
         f.__pub_task__ = True
         f.__pub_dependencies__ = args
+        f.__pub_options__ = kwargs
         return f
 
     return task_decorator
@@ -115,7 +118,8 @@ def main(options):
 
     if options.list_tasks:
         for name, task in tasks.iteritems():
-            print "%s: %s" % (name, task.__doc__ if task.__doc__ else "")
+            if not task.__pub_options__.get("private"):
+                print "%s: %s" % (name, task.__doc__ if task.__doc__ else "")
         exit()
 
     if not options.tasks:
