@@ -1,11 +1,14 @@
 import sys
 
-from sys import exit, stdout, stderr
 from os import getcwdu, chdir
+from sys import exit, stdout, stderr
 from imp import load_source
+from glob import glob
 from os.path import abspath, dirname, join, isfile
 
 from networkx import DiGraph, simple_cycles, topological_sort
+
+from shortcuts import newer
 
 class DependencyCycle(Exception): pass
 
@@ -58,6 +61,21 @@ def get_tasks(do_tasks, dep_graph):
 
     return list(reversed(topological_sort(task_order)))
 
+def needed(f1, f2):
+    return not isfile(f2) or newer(f1, f2)
+
+def file_rule(filelist, name_func, *args, **kwargs):
+    def _(build_file):
+        build_file.__pub_task__ = True
+        build_file.__pub_dependencies__ = args
+        build_file.__pub_options__ = kwargs
+
+        for fname in glob(filelist):
+            if needed(fname, name_func(fname)):
+                build_file(fname)
+    return _
+
+#XXX accept kwargs and add private kwarg
 def task(*args):
     #If we haven't been given any dependencies. Decorate and return.
     if type(args[0]) == type(task):
