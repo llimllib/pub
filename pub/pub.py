@@ -73,6 +73,9 @@ def file_rule(filelist, name_func, *args, **kwargs):
         for fname in glob(filelist):
             if needed(fname, name_func(fname)):
                 build_file(fname)
+
+        return build_file
+
     return _
 
 #XXX accept kwargs and add private kwarg
