@@ -64,12 +64,8 @@ def get_tasks(do_tasks, dep_graph):
 def needed(f1, f2):
     return not isfile(f2) or newer(f1, f2)
 
-def file_rule(filelist, name_func, *args, **kwargs):
+def file_rule(filelist, name_func):
     def _(build_file):
-        build_file.__pub_task__ = True
-        build_file.__pub_dependencies__ = args
-        build_file.__pub_options__ = kwargs
-
         for fname in glob(filelist):
             if needed(fname, name_func(fname)):
                 build_file(fname)
