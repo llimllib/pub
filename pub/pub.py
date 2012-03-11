@@ -93,6 +93,18 @@ def task(*args, **kwargs):
     return task_decorator
 
 def main(options):
+    #if the user has not specified a pubfile, try a few defaults
+    if options.pubfile is None:
+        defaults = ["pub.py", "pubfile.py"]
+
+        for f in defaults:
+            if isfile(f):
+                options.pubfile = f
+
+        if not options.pubfile:
+            print "Unable to find pub.py"
+            exit(127)
+
     if not isfile(options.pubfile):
         print "Unable to find pubfile %s" % abspath(options.pubfile)
         exit(127)
