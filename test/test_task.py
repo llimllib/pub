@@ -36,3 +36,23 @@ def test_file_rule():
     os.chdir(curdir)
 
     assert files == ['test_file_rule/bananas.txt'], files
+    assert update_file.__pub_task__ == True
+
+def test_kwargs_options():
+    @pub.task(private=True)
+    def foo(): pass
+
+    assert foo.__pub_options__["private"]
+    assert len(foo.__pub_options__) == 1
+
+    @pub.task("dependency", private=True)
+    def bar(): pass
+
+    assert bar.__pub_options__["private"]
+    assert len(bar.__pub_options__) == 1
+
+    @pub.file_rule('*', lambda x: x, private=True)
+    def baz(f): pass
+
+    assert baz.__pub_options__["private"]
+    assert len(baz.__pub_options__) == 1

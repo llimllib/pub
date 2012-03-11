@@ -102,3 +102,22 @@ def bar(): print 'second'"""
     assert out.status_code == 0, "got status code %s, stderr: %s" % (out.status_code, out.std_err)
     expect('first', out.std_out)
     assert 'second' not in out.std_out
+
+def test_dont_print_private():
+    pubtext = """import pub
+@pub.task
+def foo(): print 'first'
+
+@pub.task('foo', private=True)
+def bar(): print 'second'
+
+@pub.task(private=True)
+def baz(): print 'third'"""
+
+    pf = make_pubfile(pubtext)
+    out = run("pub -l")
+
+    assert out.status_code == 0, "got status code %s, stderr: %s" % (out.status_code, out.std_err)
+    expect('foo', out.std_out)
+    assert 'bar' not in out.std_out
+    assert 'baz' not in out.std_out
