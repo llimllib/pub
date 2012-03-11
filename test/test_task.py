@@ -27,6 +27,7 @@ def test_file_rule():
 
     #move to the test dir so we know where our files are
     os.chdir(os.path.dirname(__file__))
+
     @pub.file_rule("test_file_rule/*.txt", lambda x: x + ".bak")
     def update_file(f):
         files.append(f)
