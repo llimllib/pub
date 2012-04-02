@@ -76,9 +76,8 @@ def get_tasks(do_tasks, dep_graph):
     #on the cmd line. "pub install clean" needs a dep
     #clean -> install. This dep is ephemeral, so we operate
     #on a copy of the dep graph
-    for i, task in enumerate(do_tasks):
-        if i+1 < len(do_tasks):
-            dep_graph.add_edge(do_tasks[i+1], task)
+    for task1, task2 in pairwise(do_tasks):
+        dep_graph.add_edge(task2, task1)
 
     for task in do_tasks:
         task_order.add_node(task)
