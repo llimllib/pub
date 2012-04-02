@@ -204,3 +204,28 @@ newer than the mtime of the second. Its entire defintion follows:
 def newer(f1, f2):
     return stat(f1).st_mtime > stat(f2).st_mtime
 ```
+
+The `pub` command
+-----------------
+
+The pub command is best described by its `--help` output:
+
+```
+usage: pub [-h] [-l] [-f FILE] [task [task ...]]
+
+Python Utility Belt v0.1
+
+positional arguments:
+  task                  the tasks to run
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -l                    list available tasks
+  -f FILE, --pubfile FILE 
+                        The file to use as a pubfile
+```
+
+Contributing
+------------
+
+Please do! Patches and issues will be gladly accepted.
