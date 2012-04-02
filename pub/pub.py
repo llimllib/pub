@@ -5,12 +5,21 @@ from sys import exit, stdout, stderr
 from imp import load_source
 from glob import glob
 from os.path import abspath, dirname, join, isfile
+from itertools import tee, izip
 
 from networkx import DiGraph, simple_cycles, topological_sort
 
 from shortcuts import newer
 
 class DependencyCycle(Exception): pass
+
+def pairwise(iterable):
+    """Iterate pairwise through an iterable. Straight from the python docs.
+
+    pairwise([x,y,z]) -> (x,y), (y,z)"""
+    a, b = tee(iterable)
+    next(b, None)
+    return izip(a, b)
 
 def make_dependency_graph(tasks):
     dep_graph = DiGraph()
@@ -26,8 +35,14 @@ def make_dependency_graph(tasks):
                  if hasattr(task, "__pub_dependencies__")]
     for task, deps in taskdeps:
         for dep in deps:
-            assert not dep_graph.has_edge(task, dep), "Cannot add duplicate edge: %s, %s" % (task, dep)
             dep_graph.add_edge(task, dep)
+
+    #now, to assure that a task with deps "foo", "bar" executes foo before bar,
+    #go through each task and add a dep from bar -> foo
+    for name, task in tasks.iteritems():
+        if hasattr(task, "__pub_dependencies__") and len(task.__pub_dependencies__) > 1:
+            for task1, task2 in pairwise(task.__pub_dependencies__):
+                dep_graph.add_edge(task2, task1)
 
     if simple_cycles(dep_graph):
         raise DependencyCycle("Cycle in the dependency graph: %s" % dep_graph)
