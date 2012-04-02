@@ -1,4 +1,6 @@
 from shortcuts import make_shortcut, newer
 
-for cmd in ["python", "pip", "ls", "rm", "nosetests", "mkdir", "rsync"]:
+commands = ["ls", "mkdir", "nosetests", "python", "pip", "rm", "rsync", "touch", "zip"]
+
+for cmd in commands:
     globals()[cmd] = make_shortcut(cmd)
