@@ -156,3 +156,51 @@ $ pub -l
 gotit: You've got it!
 noyou: I thought you had it.
 ```
+
+Shortcuts
+---------
+
+The `pub.shortcuts` module builds on @kennethreitz's fine
+[envoy](https://github.com/kennethreitz/envoy) module to provide a convenient
+command-line interface for pub.
+
+You can see all the commands that are available
+[in the source](https://github.com/llimllib/pub/blob/master/pub/shortcuts/__init__.py),
+or you can make your own:
+
+```python
+from pub.shortcuts import make_shortcut
+
+gcc = make_shortcut("gcc")
+
+#then use it like so:
+gcc("-o guildenstern.exe rosencrantz.c")
+```
+
+The invocation of the `gcc` funciton at the end will translate into 
+`gcc -o guildenstern.exe rosencrantz.c` and be run.
+
+We can also use our shortcuts to inspect the input, output, and status
+code of the command;
+the return value of a shortcut will be an [envoy](https://github.com/kennethreitz/envoy)
+result. Check their documentation for specifics, but basically you can
+see its output with:
+
+```python
+from pub.shortcuts import make_shortcut
+
+echo = make_shortcut("echo")
+
+out = echo("A conspiracy of cartographers")
+
+assert out.std_out == "A conspiracy of cartographers\n"
+```
+
+The `pub.shortcuts` module also contains one utility function, `newer`. It
+simply accepts two arguments and returns True if the mtime of the first is
+newer than the mtime of the second. Its entire defintion follows:
+
+```python
+def newer(f1, f2):
+    return stat(f1).st_mtime > stat(f2).st_mtime
+```
