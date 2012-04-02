@@ -158,3 +158,20 @@ def clean(): print '%s'""" % (sentinel1, sentinel2)
     out = run("pub -f %s install clean" % (pf.name))
     assert out.status_code == 0
     expect("%(sentinel1)s.*%(sentinel2)s" % locals(), out.std_out)
+
+def test_multiple_deps():
+    pubtext = """import pub
+@pub.task("foo", "bar")
+def baz(): pass
+
+@pub.task
+def foo(): print 'foo'
+
+@pub.task
+def bar(): print 'bar'"""
+
+    pf = make_pubfile(pubtext)
+
+    out = run("pub -f %s baz" % (pf.name))
+    assert out.status_code == 0, out.std_out + out.std_err
+    expect("foo.*bar", out.std_out)

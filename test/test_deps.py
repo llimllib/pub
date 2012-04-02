@@ -34,7 +34,7 @@ def test_bigger_dep_graph():
     tasks = {
         "foo": make_task(),
         "bar": make_task("foo"),
-        "baz": make_task("bar", "foo"),
+        "baz": make_task("foo", "bar"),
     }
 
     dep_graph = pub.make_dependency_graph(tasks)
@@ -61,7 +61,7 @@ def test_get_tasks():
     tasks = {
         "foo": make_task(),
         "bar": make_task("foo"),
-        "baz": make_task("bar", "foo"),
+        "baz": make_task("foo", "bar"),
     }
 
     dep_graph = pub.make_dependency_graph(tasks)
