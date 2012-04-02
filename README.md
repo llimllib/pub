@@ -1,14 +1,14 @@
 pub - the Python Utility Belt
 =============================
 
-Pub is a tool to help you automate those tasks you don't want to manually. It
-attempts to provide the cleanest, sanest interface for your building, cleaning,
-and deploying needs.
+`pub` is a tool to help you automate those tasks you don't want to do manually.
+It attempts to provide the cleanest, sanest interface for your building, 
+cleaning, and deploying needs.
 
 Pub code is simply python code, allowing you to leverage the skills and tools
 you're already familiar with.
 
-Simply save a `pub.py` file in a dir, import pub, and go on your way.
+Simply install `pub`, save a `pub.py` file in a dir, and start coding.
 
 Here's an example pub.py with two tasks, one to build a project and one to
 deploy it to a server:
@@ -32,6 +32,13 @@ functionality.
 
 The `deploy` task depends on the `build` task, so calling `pub deploy`
 will first run the build task, then deploy.
+
+Installation
+------------
+
+`pip install pub`
+
+(errrr.... coming soon. For now, download and `python setup.py install`)
 
 Tasks
 -----
