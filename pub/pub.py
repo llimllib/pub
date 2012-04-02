@@ -121,6 +121,9 @@ def main(options):
     #insert the pubfile's dir at the front of sys.path
     sys.path.insert(0, dirname(abspath(options.pubfile)))
 
+    #run in the directory containing the pubfile
+    chdir(dirname(abspath(options.pubfile)))
+
     try:
         #prevent python from writing pubfilec files.
         sys.dont_write_bytecode = True
