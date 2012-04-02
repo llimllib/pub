@@ -33,7 +33,8 @@ to a server:
 
     @pub.task("build")
     def deploy():
-        rsync("build", "user@server:~")```
+        rsync("build", "user@server:~")
+```
 
 The pub.shortcuts module gives us handy shortcuts to access command-line
 functionality.
