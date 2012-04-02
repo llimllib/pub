@@ -236,3 +236,5 @@ Contributing
 ------------
 
 Please do! Patches and issues will be gladly accepted.
+
+To run `pub`'s tests, just run `pub test`.
