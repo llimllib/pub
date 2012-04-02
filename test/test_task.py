@@ -32,11 +32,13 @@ def test_file_rule():
     def update_file(f):
         files.append(f)
 
+    update_file()
+
     #return to the original working dir
     os.chdir(curdir)
 
     assert files == ['test_file_rule/bananas.txt'], files
-    assert update_file
+    assert update_file.__pub_task__
 
 def test_kwargs_options():
     @pub.task(private=True)

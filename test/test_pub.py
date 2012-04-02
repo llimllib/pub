@@ -17,7 +17,7 @@ def make_pubfile(pubtext):
     return pubfile
 
 def expect(needle, haystack):
-    assert re.search(needle, haystack, re.S), "Couldn't find %s in %s" % (needle, haystack)
+    assert re.search(needle, haystack, re.S), "Couldn't find <%s> in <%s>" % (needle, haystack)
 
 def test_task():
     sentinel = 'bananas' * 4
@@ -121,3 +121,23 @@ def baz(): print 'third'"""
     expect('foo', out.std_out)
     assert 'bar' not in out.std_out
     assert 'baz' not in out.std_out
+
+def test_file_rule():
+    pubtext = """import pub
+@pub.task("mkbar")
+def foo(): pass
+
+@pub.file_rule("*.txt", lambda x: x + ".got")
+def mkbar(f):
+    print f"""
+
+    tempdir = tempfile.mkdtemp()
+    fname = os.path.join(tempdir, "pub.py")
+    open(fname, 'w').write(pubtext)
+
+    pub.shortcuts.touch("%s/test.txt" % tempdir)
+
+    out = run("pub -f %s foo" % fname)
+
+    assert out.status_code == 0, "got status code %s, stderr: %s" % (out.status_code, out.std_err)
+    expect('test.txt', out.std_out)
