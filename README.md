@@ -10,8 +10,8 @@ you're already familiar with.
 
 Simply save a `pub.py` file in a dir, import pub, and go on your way.
 
-Here's an example with two tasks, one to build a project and one to deploy it
-to a server:
+Here's an example pub.py with two tasks, one to build a project and one to
+deploy it to a server:
 
 ```python
 import pub
