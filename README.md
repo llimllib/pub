@@ -23,17 +23,17 @@ Here's an example with two tasks, one to build a project and one to deploy it
 to a server:
 
 ```python
-    import pub
-    from pub.shortcuts import mkdir, cp, rsync
+import pub
+from pub.shortcuts import mkdir, cp, rsync
 
-    @pub.task
-    def build():
-        mkdir("build")
-        cp("src/binary", "build")
+@pub.task
+def build():
+    mkdir("build")
+    cp("src/binary", "build")
 
-    @pub.task("build")
-    def deploy():
-        rsync("build", "user@server:~")
+@pub.task("build")
+def deploy():
+    rsync("build", "user@server:~")
 ```
 
 The pub.shortcuts module gives us handy shortcuts to access command-line
