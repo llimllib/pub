@@ -175,9 +175,16 @@ def main(options):
         exit()
 
     if not options.tasks:
-        #TODO: handle default tasks
-        print "no tasks specified. exiting"
-        exit(127)
+        #search for an action marked default
+        options.tasks = []
+        for name, task in tasks.iteritems():
+            if task.__pub_options__.get("default"):
+                options.tasks.append(name)
+
+        #if tasks is *still* empty, fail out
+        if not options.tasks:
+            print "no tasks specified. exiting"
+            exit(127)
 
     unknown_tasks = [t for t in options.tasks if t not in tasks.keys()]
     if any(unknown_tasks):

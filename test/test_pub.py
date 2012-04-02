@@ -178,3 +178,14 @@ def bar(): print 'bar'"""
     out = run("pub -f %s baz" % (pf.name))
     assert out.status_code == 0, out.std_out + out.std_err
     expect("foo.*bar", out.std_out)
+
+def test_default_action():
+    pubtext = """import pub
+@pub.task(default=True)
+def foo(): print 'foo'"""
+
+    pf = make_pubfile(pubtext)
+
+    out = run("pub -f %s" % (pf.name))
+    assert out.status_code == 0, out.std_out + out.std_err
+    expect("foo", out.std_out)
