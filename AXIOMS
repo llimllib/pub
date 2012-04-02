@@ -24,3 +24,7 @@
     * times https://github.com/nvie/times
     * use rsync for file copies!
     * networkx http://networkx.lanl.gov/
+* pub should be well tested
+    * all bugs should have a failing test before a solution
+    * the test suite should run quickly
+    * be pragmatic about unit vs. integration testing
