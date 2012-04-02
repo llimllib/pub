@@ -95,10 +95,15 @@ def needed(f1, f2):
 #     returns an argument-less function that actually applies the file rule
 def file_rule(filelist, name_func):
     def f(build_file):
-        def g():
-            for fname in glob(filelist):
-                if needed(fname, name_func(fname)):
-                    build_file(fname)
+        def g(f=None):
+            #called with 0 arguments, build all files in the filelist
+            if not f:
+                for fname in glob(filelist):
+                    if needed(fname, name_func(fname)):
+                        build_file(fname)
+            #called with 1 argument, build that file
+            else:
+                build_file(f)
 
         g.__pub_task__ = True
         g.__pub_dependencies__ = ()

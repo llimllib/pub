@@ -129,7 +129,9 @@ def foo(): pass
 
 @pub.file_rule("*.txt", lambda x: x + ".got")
 def mkbar(f):
-    print f"""
+    print f
+
+mkbar('mkbar accepts arguments')"""
 
     tempdir = tempfile.mkdtemp()
     fname = os.path.join(tempdir, "pub.py")
@@ -141,6 +143,7 @@ def mkbar(f):
 
     assert out.status_code == 0, "got status code %s, stderr: %s" % (out.status_code, out.std_err)
     expect('test.txt', out.std_out)
+    expect('mkbar accepts arguments', out.std_out)
 
 def test_multiple_tasks():
     sentinel1 = 'alpha' * 4
