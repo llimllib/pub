@@ -141,3 +141,20 @@ def mkbar(f):
 
     assert out.status_code == 0, "got status code %s, stderr: %s" % (out.status_code, out.std_err)
     expect('test.txt', out.std_out)
+
+def test_multiple_tasks():
+    sentinel1 = 'alpha' * 4
+    sentinel2 = 'beta' * 4
+
+    pubtext = """import pub
+@pub.task
+def install(): print '%s'
+
+@pub.task
+def clean(): print '%s'""" % (sentinel1, sentinel2)
+
+    pf = make_pubfile(pubtext)
+
+    out = run("pub -f %s install clean" % (pf.name))
+    assert out.status_code == 0
+    expect("%(sentinel1)s.*%(sentinel2)s" % locals(), out.std_out)
