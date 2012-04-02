@@ -64,15 +64,24 @@ def get_tasks(do_tasks, dep_graph):
 def needed(f1, f2):
     return not isfile(f2) or newer(f1, f2)
 
+#return a function which closes over a filelist and a function to construct the
+#name of a new file, which:
+#  returns a function which closes over the function used to generate a new file,
+#  which:
+#     returns an argument-less function that actually applies the file rule
 def file_rule(filelist, name_func):
-    def _(build_file):
-        for fname in glob(filelist):
-            if needed(fname, name_func(fname)):
-                build_file(fname)
+    def f(build_file):
+        def g():
+            for fname in glob(filelist):
+                if needed(fname, name_func(fname)):
+                    build_file(fname)
 
-        return build_file
+        g.__pub_task__ = True
+        g.__pub_dependencies__ = ()
+        g.__pub_options__ = {"private": True}
 
-    return _
+        return g
+    return f
 
 #XXX accept kwargs and add private kwarg
 def task(*args, **kwargs):
