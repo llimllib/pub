@@ -122,6 +122,7 @@ be listed.
 
 ```python
 from pub import task
+
 @task(default=True)
 def do_something(): print "got here"
 ```
@@ -131,3 +132,27 @@ and run `pub` with no arguments, you should see "got here" printed.
 You may mark any number of tasks as `default`; they will all be run if `pub`
 is invoked without arguments. While their dependency information will never
 be ignored, there is no defined order in which they will be run.
+
+Tasks are documented simply by giving them docstrings. Given this `pub.py`:
+
+```python
+from pub import task
+
+@task
+def gotit():
+    """You've got it!"""
+    pass
+
+@task
+def noyou():
+    """I thought you had it."""
+    pass
+```
+
+We can see how they are displayed by pub:
+
+```
+$ pub -l
+gotit: You've got it!
+noyou: I thought you had it.
+```
