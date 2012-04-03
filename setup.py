@@ -11,10 +11,6 @@ try:
 except ImportError:
     from distutils.core import setup
 
-if sys.argv[-1] == 'publish':
-    os.system('python setup.py sdist upload')
-    sys.exit()
-
 required = ['path.py>=2.2', 'envoy>=0.0.2', 'networkx>=1.6']
 packages = ['pub', 'pub.shortcuts']
 

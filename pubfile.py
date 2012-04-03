@@ -23,5 +23,9 @@ def reinstall():
     install()
 
 @task
+def publish():
+    python("setup.py sdist upload")
+
+@task
 def test():
     nosetests("-s")
