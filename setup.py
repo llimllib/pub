@@ -17,7 +17,7 @@ setup(
     name='pub',
     version='0.0.4',
     description='Python Utility Belt',
-    long_description='TODO',
+    long_description=file("README.rs").read(),
     author='Bill Mill',
     author_email='bill.mill@gmail.com',
     url='https://github.com/llimllib/pub',
@@ -28,7 +28,7 @@ setup(
     install_requires=required,
     license='MIT',
     classifiers=(
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'Natural Language :: English',
         'License :: OSI Approved :: MIT License',

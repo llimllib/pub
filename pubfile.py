@@ -1,5 +1,5 @@
 from pub import task
-from pub.shortcuts import python, pip, rm, nosetests
+from pub.shortcuts import make_shortcut, python, pip, rm, nosetests
 
 @task
 def clean():
@@ -25,7 +25,11 @@ def reinstall():
 @task
 def publish():
     """upload pub to pyPI"""
+    pandoc = make_shorcut("pandoc")
+
+    pandoc("-s -w rst README.md -o README.rs")
     python("setup.py sdist upload")
+    rm("README.rs")
 
 @task
 def test():
