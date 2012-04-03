@@ -38,8 +38,6 @@ Installation
 
 `pip install pub`
 
-(errrr.... coming soon. For now, download and `python setup.py install`)
-
 Tasks
 -----
 
@@ -189,9 +187,9 @@ The invocation of the `gcc` funciton at the end will translate into
 
 We can also use our shortcuts to inspect the input, output, and status
 code of the command;
-the return value of a shortcut will be an [envoy](https://github.com/kennethreitz/envoy)
-result. Check their documentation for specifics, but basically you can
-see its output with:
+the return value of a shortcut will be an
+[envoy](https://github.com/kennethreitz/envoy) result. Check their
+documentation for specifics, but basically you can see its output with:
 
 ```python
 from pub.shortcuts import make_shortcut
@@ -220,7 +218,7 @@ The pub command is best described by its `--help` output:
 ```
 usage: pub [-h] [-l] [-f FILE] [task [task ...]]
 
-Python Utility Belt v0.1
+Python Utility Belt v0.0.4
 
 positional arguments:
   task                  the tasks to run
@@ -237,4 +235,5 @@ Contributing
 
 Please do! Patches and issues will be gladly accepted.
 
-To run `pub`'s tests, just run `pub test`.
+To run `pub`'s tests, just run `pub test`; you'll need to have installed
+[nose](https://github.com/nose-devs/nose) first.
