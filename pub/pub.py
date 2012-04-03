@@ -156,7 +156,6 @@ def main(options):
     try:
         #prevent python from writing pubfilec files.
         sys.dont_write_bytecode = True
-        #TODO: scan an array of pubfile name options
         pf = load_source("pubfile", options.pubfile)
         sys.dont_write_bytecode = False
     except:
