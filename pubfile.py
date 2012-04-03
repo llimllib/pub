@@ -24,8 +24,10 @@ def reinstall():
 
 @task
 def publish():
+    """upload pub to pyPI"""
     python("setup.py sdist upload")
 
 @task
 def test():
+    """run pub's tests"""
     nosetests("-s")
