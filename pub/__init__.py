@@ -5,4 +5,4 @@ from pub import *
 #setup.py installs it. Is there a clean way to solve this problem?
 #Until then, just keep updating this version number in setup.py
 #and here.
-__version__="0.0.2"
+__version__="0.0.3"
