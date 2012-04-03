@@ -15,7 +15,7 @@ packages = ['pub', 'pub.shortcuts']
 
 setup(
     name='pub',
-    version='0.0.2',
+    version='0.0.3',
     description='Python Utility Belt',
     long_description='TODO',
     author='Bill Mill',
