@@ -4,7 +4,6 @@
 
 import os
 import sys
-import pub 
 
 try:
     from setuptools import setup
@@ -16,7 +15,7 @@ packages = ['pub', 'pub.shortcuts']
 
 setup(
     name='pub',
-    version=pub.__version__,
+    version='0.0.2',
     description='Python Utility Belt',
     long_description='TODO',
     author='Bill Mill',
