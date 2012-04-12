@@ -189,3 +189,28 @@ def foo(): print 'foo'"""
     out = run("pub -f %s" % (pf.name))
     assert out.status_code == 0, out.std_out + out.std_err
     expect("foo", out.std_out)
+
+def test_unknown_task():
+    pubtext = """import pub
+@pub.unknown_task
+def foo(): print 'foo'"""
+
+    pf = make_pubfile(pubtext)
+
+    out = run("pub -f %s this_is_an_unknown_task" % (pf.name))
+    assert out.status_code == 0, out.std_out + out.std_err
+    expect("foo", out.std_out)
+
+def test_unknown_task_and_known_task():
+    pubtext = """import pub
+@pub.unknown_task
+def foo(): print 'foo'
+
+@pub.task
+def bar(): print 'bar'"""
+
+    pf = make_pubfile(pubtext)
+
+    out = run("pub -f %s this_is_an_unknown_task bar" % (pf.name))
+    assert out.status_code == 0, out.std_out + out.std_err
+    expect("foo.*bar", out.std_out)

@@ -52,3 +52,9 @@ def test_kwargs_options():
 
     assert bar.__pub_options__["private"]
     assert len(bar.__pub_options__) == 1
+
+def test_unknown_task():
+    @pub.unknown_task
+    def foo(): pass
+
+    assert foo.__pub_unknown_task__
