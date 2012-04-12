@@ -112,7 +112,6 @@ def file_rule(filelist, name_func):
         return g
     return f
 
-#XXX accept kwargs and add private kwarg
 def task(*args, **kwargs):
     #If we haven't been given any dependencies. Decorate and return.
     if args and type(args[0]) == type(task):
@@ -129,6 +128,13 @@ def task(*args, **kwargs):
         return f
 
     return task_decorator
+
+def unknown_task(f):
+    """Run if we can't find the task specified on the cmd line
+
+    Accepts no arguments, just the function to be run."""
+    f.__pub_unknown_task__ = True
+    return f
 
 def main(options):
     #if the user has not specified a pubfile, try a few defaults
@@ -185,14 +191,22 @@ def main(options):
             print "no tasks specified. exiting"
             exit(127)
 
+    known_tasks = [t for t in options.tasks if t in tasks.keys()]
     unknown_tasks = [t for t in options.tasks if t not in tasks.keys()]
     if any(unknown_tasks):
-        print "sorry, don't know how to perform tasks %s" % unknown_tasks
-        exit(127)
+        unknown_task_handlers = [getattr(pf, d) for d in dir(pf)
+                                 if getattr(getattr(pf, d), "__pub_unknown_task__", False)]
+        if unknown_task_handlers:
+            for i in range(len(unknown_tasks)):
+                #execute the first unknown task handler
+                unknown_task_handlers[0]()
+        else:
+            print "sorry, don't know how to perform tasks %s" % unknown_tasks
+            exit(127)
 
     dep_graph = make_dependency_graph(tasks)
 
-    task_list = get_tasks(options.tasks, dep_graph)
+    task_list = get_tasks(known_tasks, dep_graph)
 
     for task in task_list:
         tasks[task]()
