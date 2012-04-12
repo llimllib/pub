@@ -4,7 +4,7 @@ from pub.shortcuts import make_shortcut, python, pip, rm, nosetests
 @task
 def clean():
     """clean up the crap left behind by setup.py build"""
-    rm("-rf build dist pub.egg-info docs pubfilec")
+    rm("-rf build dist pub.egg-info docs setup.pyc")
 
 @task
 def build():
