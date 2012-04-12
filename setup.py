@@ -13,11 +13,18 @@ except ImportError:
 required = ['path.py>=2.2', 'envoy>=0.0.2', 'networkx>=1.6']
 packages = ['pub', 'pub.shortcuts']
 
+#skip README.rs if it hasn't been generated, it's only important
+#on publication to pyPI. The pubfile generates it from README.md
+try:
+    longdesc = open("README.rs").read()
+except:
+    longdesc = ''
+
 setup(
     name='pub',
     version='0.0.4',
     description='Python Utility Belt',
-    long_description=file("README.rs").read(),
+    long_description=longdesc,
     author='Bill Mill',
     author_email='bill.mill@gmail.com',
     url='https://github.com/llimllib/pub',
