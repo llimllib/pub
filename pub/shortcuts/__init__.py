@@ -1,4 +1,4 @@
-from shortcuts import make_shortcut, newer
+from shortcuts import run, make_shortcut, newer
 
 commands = ["ls", "mkdir", "nosetests", "python",
             "pip", "pub", "rm", "rsync", "touch", "zip"]

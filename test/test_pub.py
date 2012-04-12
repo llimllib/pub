@@ -214,3 +214,20 @@ def bar(): print 'bar'"""
     out = run("pub -f %s this_is_an_unknown_task bar" % (pf.name))
     assert out.status_code == 0, out.std_out + out.std_err
     expect("foo.*bar", out.std_out)
+
+def test_quiet_kwarg():
+    pubtext = """import pub
+@pub.task
+def foo():
+    pub.shortcuts.run("echo #bananas", quiet=True)
+
+@pub.task
+def bar():
+    pub.shortcuts.run("echo #kiwifruit")"""
+
+    pf = make_pubfile(pubtext)
+
+    out = run("pub -f %s foo bar" % (pf.name))
+    assert out.status_code == 0, out.std_out + out.std_err
+    assert 'bananas' not in out.std_out, out.std_out + out.std_err
+    expect("kiwifruit", out.std_out)
