@@ -162,6 +162,22 @@ gotit: You've got it!
 noyou: I thought you had it.
 ```
 
+There is one special task decorator, `@unknown_task`. This task will be run
+once for each task pub is given that it doesn't know how to run. That is, if
+you have a pubfile:
+
+
+```from pub import task, unknown_task
+
+@task
+def foo(): print "foo"
+
+@unknown_task
+def bar(): print "bar"```
+
+And run the command `pub zot` on that pubfile, pub will print `bar`. If you
+run `pub zot zip`, it will print `bar\nbar`.
+
 Shortcuts
 ---------
 
