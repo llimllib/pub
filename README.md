@@ -20,11 +20,11 @@ from pub.shortcuts import mkdir, cp, rsync
 @task
 def build():
     mkdir("build")
-    cp("src/binary", "build")
+    cp("src/binary build")
 
 @task("build")
 def deploy():
-    rsync("build", "user@server:~")
+    rsync("build user@server:~")
 ```
 
 The pub.shortcuts module gives us handy shortcuts to access command-line
