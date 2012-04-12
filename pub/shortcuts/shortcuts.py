@@ -3,7 +3,9 @@ from sys import stdout, stderr
 import envoy
 
 def run(cmd, *args, **kwargs):
-    if 'quiet' not in kwargs or not kwargs['quiet']:
+    if 'quiet' in kwargs:
+        del kwargs['quiet']
+    else:
         print cmd
 
     out = envoy.run(cmd, *args, **kwargs)

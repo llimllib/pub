@@ -137,7 +137,7 @@ mkbar('mkbar accepts arguments')"""
     fname = os.path.join(tempdir, "pub.py")
     open(fname, 'w').write(pubtext)
 
-    pub.shortcuts.touch("%s/test.txt" % tempdir)
+    pub.shortcuts.touch("%s/test.txt" % tempdir, quiet=True)
 
     out = run("pub -f %s foo" % fname)
 
