@@ -4,7 +4,7 @@ from os import getcwdu, chdir
 from sys import exit, stdout, stderr
 from imp import load_source
 from glob import glob
-from os.path import abspath, dirname, join, isfile
+from os.path import abspath, dirname, basename, join, isfile
 from itertools import tee, izip
 
 from networkx import DiGraph, simple_cycles, topological_sort
@@ -162,7 +162,7 @@ def main(options):
     try:
         #prevent python from writing pubfilec files.
         sys.dont_write_bytecode = True
-        pf = load_source("pubfile", options.pubfile)
+        pf = load_source("pubfile", basename(options.pubfile))
         sys.dont_write_bytecode = False
     except:
         print "Error in pubfile."
