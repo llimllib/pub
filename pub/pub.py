@@ -83,6 +83,8 @@ def get_tasks(do_tasks, dep_graph):
         task_order.add_node(task)
         _get_deps(task, task_order, dep_graph)
 
+    import pdb; pdb.set_trace()
+
     return list(reversed(topological_sort(task_order)))
 
 def needed(f1, f2):

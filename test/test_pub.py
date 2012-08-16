@@ -231,3 +231,32 @@ def bar():
     assert out.status_code == 0, out.std_out + out.std_err
     assert 'bananas' not in out.std_out, out.std_out + out.std_err
     expect("kiwifruit", out.std_out)
+
+def test_copy_newsite():
+    #This test is failing in real life yo
+    pubtext = """import pub
+@pub.task
+def clean():
+    pub.shortcuts.run("echo clean")
+
+@pub.task(private=True)
+def make_build():
+    pub.shortcuts.run("echo make_build")
+
+@pub.task("make_build", private=True)
+def blog_template():
+    pub.shortcuts.run("echo blog_template")
+
+@pub.task("make_build", "blog_template")
+def build():
+    pub.shortcuts.run("echo build")"""
+
+    pf = make_pubfile(pubtext)
+
+    out = run("pub -f %s clean build" % pf.name)
+    assert out.status_code == 0, out.std_out + out.std_err
+    assert "deploy" not in out.std_out, out.std_out + out.std_err
+    
+    print out.std_out
+
+    expect("clean.*make_build.*blog_template.*build.*", out.std_out)
