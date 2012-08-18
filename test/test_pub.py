@@ -260,3 +260,25 @@ def build():
     print out.std_out
 
     expect("clean.*make_build.*blog_template.*build.*", out.std_out)
+
+def test_proper_dirname():
+    pubtext = """import pub
+@pub.task(default=True)
+def foo(): print 'foo'"""
+    pf = make_pubfile(pubtext)
+
+    curdir = os.path.abspath(os.curdir)
+
+    #There was a bug where 'pub -f x/y.pub' failed, so make a path of the
+    #form x/y.pub and run it from a place where x/y.pub makes sense
+    partial_name  = os.path.join(*pf.name.split(os.path.sep)[-2:])
+    fromdir = '/' + os.path.join(*pf.name.split(os.path.sep)[:-2])
+
+    os.chdir(fromdir)
+
+    out = run("pub -f %s" % partial_name)
+
+    os.chdir(curdir)
+
+    assert out.status_code == 0, out.std_out + out.std_err
+    expect('foo', out.std_out)
