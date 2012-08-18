@@ -66,7 +66,7 @@ def test_get_tasks():
 
     dep_graph = pub.make_dependency_graph(tasks)
 
-    tasklist = pub.get_tasks(["baz"], dep_graph)
+    tasklist = list(pub.get_tasks(["baz"], dep_graph))
 
     assert tasklist == ['foo', 'bar', 'baz'], "Expected [foo, bar, baz], got %s" % (tasklist)
 
@@ -79,7 +79,7 @@ def test_get_tasks2():
 
     dep_graph = pub.make_dependency_graph(tasks)
 
-    tasklist = pub.get_tasks(["baz"], dep_graph)
+    tasklist = list(pub.get_tasks(["baz"], dep_graph))
 
     assert tasklist == ['foo', 'bar', 'baz'], "Expected [foo, bar, baz], got %s" % (tasklist)
 
@@ -92,7 +92,7 @@ def test_get_not_all_tasks():
 
     dep_graph = pub.make_dependency_graph(tasks)
 
-    tasklist = pub.get_tasks(["baz"], dep_graph)
+    tasklist = list(pub.get_tasks(["baz"], dep_graph))
 
     assert tasklist == ["foo", "baz"], "tasklist is: %s" % tasklist
 
@@ -105,6 +105,6 @@ def test_ignore_dupe_edge():
     }
     dep_graph = pub.make_dependency_graph(tasks)
 
-    tasklist = pub.get_tasks(["baz", "bam"], dep_graph)
+    tasklist = list(pub.get_tasks(["baz", "bam"], dep_graph))
 
     assert all(t in tasklist for t in tasks), tasklist

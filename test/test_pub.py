@@ -256,8 +256,6 @@ def build():
     out = run("pub -f %s clean build" % pf.name)
     assert out.status_code == 0, out.std_out + out.std_err
     assert "deploy" not in out.std_out, out.std_out + out.std_err
-    
-    print out.std_out
 
     expect("clean.*make_build.*blog_template.*build.*", out.std_out)
 
