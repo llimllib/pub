@@ -5,7 +5,7 @@ from sys import exit, stdout, stderr
 from imp import load_source
 from glob import glob
 from os.path import abspath, dirname, basename, join, isfile
-from itertools import tee, izip
+from itertools import tee, izip, chain
 
 from networkx import DiGraph, simple_cycles, topological_sort
 
@@ -20,6 +20,10 @@ def pairwise(iterable):
     a, b = tee(iterable)
     next(b, None)
     return izip(a, b)
+
+def flatten(listOfLists):
+    "Flatten one level of nesting"
+    return chain.from_iterable(listOfLists)
 
 def make_dependency_graph(tasks):
     dep_graph = DiGraph()
@@ -68,24 +72,17 @@ def _get_deps(task, task_graph, dep_graph):
 def get_tasks(do_tasks, dep_graph):
     """Given a list of tasks to perform and a dependency graph, return the tasks
     that must be performed, in the correct order"""
-    task_order = DiGraph()
-    dep_graph = dep_graph.copy()
-
-    #first add dependencies between the tasks to perform,
-    #to make sure that we run the tasks in the order given
-    #on the cmd line. "pub install clean" needs a dep
-    #clean -> install. This dep is ephemeral, so we operate
-    #on a copy of the dep graph
-    for task1, task2 in pairwise(do_tasks):
-        dep_graph.add_edge(task2, task1)
+    #Each task that the user has specified gets its own execution graph
+    task_graphs = []
 
     for task in do_tasks:
-        task_order.add_node(task)
-        _get_deps(task, task_order, dep_graph)
+        exgraph = DiGraph()
+        exgraph.add_node(task)
+        _get_deps(task, exgraph, dep_graph)
 
-    import pdb; pdb.set_trace()
+        task_graphs.append(exgraph)
 
-    return list(reversed(topological_sort(task_order)))
+    return flatten(reversed(topological_sort(g)) for g in task_graphs)
 
 def needed(f1, f2):
     return not isfile(f2) or newer(f1, f2)
