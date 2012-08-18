@@ -1,6 +1,6 @@
 from shortcuts import run, make_shortcut, newer
 
-commands = ["ls", "mkdir", "nosetests", "python",
+commands = ["git", "ls", "mkdir", "nosetests", "python",
             "pip", "pub", "rm", "rsync", "touch", "zip"]
 
 for cmd in commands:
