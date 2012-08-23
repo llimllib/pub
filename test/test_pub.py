@@ -177,7 +177,8 @@ def bar(): print 'bar'"""
 
     out = run("pub -f %s baz" % (pf.name))
     assert out.status_code == 0, out.std_out + out.std_err
-    expect("foo.*bar", out.std_out)
+    expect("foo", out.std_out)
+    expect("bar", out.std_out)
 
 def test_default_action():
     pubtext = """import pub
@@ -280,3 +281,21 @@ def foo(): print 'foo'"""
 
     assert out.status_code == 0, out.std_out + out.std_err
     expect('foo', out.std_out)
+
+def test_independent_deps():
+    pubtext = """import pub
+@pub.task
+def foo(): print 'foo'
+
+@pub.task
+def bar(): print 'bar'
+
+@pub.task("bar", "foo")
+def baz(): print 'baz'"""
+    pf = make_pubfile(pubtext)
+
+    out = run("pub -f %s foo" % (pf.name))
+    assert out.status_code == 0, out.std_out + out.std_err
+    assert 'bar' not in out.std_out, out.std_out + out.std_err
+    assert 'baz' not in out.std_out, out.std_out + out.std_err
+    expect("foo", out.std_out)
