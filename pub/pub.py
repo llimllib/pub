@@ -41,13 +41,6 @@ def make_dependency_graph(tasks):
         for dep in deps:
             dep_graph.add_edge(task, dep)
 
-    #now, to assure that a task with deps "foo", "bar" executes foo before bar,
-    #go through each task and add a dep from bar -> foo
-    for name, task in tasks.iteritems():
-        if hasattr(task, "__pub_dependencies__") and len(task.__pub_dependencies__) > 1:
-            for task1, task2 in pairwise(task.__pub_dependencies__):
-                dep_graph.add_edge(task2, task1)
-
     if simple_cycles(dep_graph):
         raise DependencyCycle("Cycle in the dependency graph: %s" % dep_graph)
 
@@ -72,6 +65,10 @@ def _get_deps(task, task_graph, dep_graph):
 def get_tasks(do_tasks, dep_graph):
     """Given a list of tasks to perform and a dependency graph, return the tasks
     that must be performed, in the correct order"""
+
+    #XXX: Is it important that if a task has "foo" before "bar" as a dep,
+    #     that foo executes before bar? Why? ATM this may not happen.
+
     #Each task that the user has specified gets its own execution graph
     task_graphs = []
 
