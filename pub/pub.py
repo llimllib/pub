@@ -41,8 +41,9 @@ def make_dependency_graph(tasks):
         for dep in deps:
             dep_graph.add_edge(task, dep)
 
-    if simple_cycles(dep_graph):
-        raise DependencyCycle("Cycle in the dependency graph: %s" % dep_graph)
+    cycles = list(simple_cycles(dep_graph))
+    if cycles:
+        raise DependencyCycle("Cycle in the dependency graph: %s %s" % (dep_graph, cycles))
 
     return dep_graph
 
